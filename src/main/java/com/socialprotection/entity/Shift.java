@@ -1,6 +1,8 @@
 package com.socialprotection.entity;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +12,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "shifts")
@@ -24,14 +29,14 @@ public class Shift {
 	private String shiftTitle;
 	
 	@Column(name = "time_start")
-	private Date timeStart;
+	private Time timeStart;
 	
 	@Column(name = "time_end")
-	private Date timeEnd;
+	private Time timeEnd;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "employee_id")
-	private Employee employee;
+	@JsonIgnore
+	@OneToMany(mappedBy = "shift")
+	private List<Employee> employees;
 
 	public long getShiftId() {
 		return shiftId;
@@ -49,36 +54,39 @@ public class Shift {
 		this.shiftTitle = shiftTitle;
 	}
 
-	public Date getTimeStart() {
+	public Time getTimeStart() {
 		return timeStart;
 	}
 
-	public void setTimeStart(Date timeStart) {
+	public void setTimeStart(Time timeStart) {
 		this.timeStart = timeStart;
 	}
 
-	public Date getTimeEnd() {
+	public Time getTimeEnd() {
 		return timeEnd;
 	}
 
-	public void setTimeEnd(Date timeEnd) {
+	public void setTimeEnd(Time timeEnd) {
 		this.timeEnd = timeEnd;
 	}
 
-	public Employee getEmployee() {
-		return employee;
+	
+
+	public List<Employee> getEmployees() {
+		return employees;
 	}
 
-	public void setEmployee(Employee employee) {
-		this.employee = employee;
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
 	}
 
-	public Shift(String shiftTitle, Date timeStart, Date timeEnd, Employee employee) {
+	
+
+	public Shift(String shiftTitle, Time timeStart, Time timeEnd) {
 		super();
 		this.shiftTitle = shiftTitle;
 		this.timeStart = timeStart;
 		this.timeEnd = timeEnd;
-		this.employee = employee;
 	}
 
 	public Shift() {

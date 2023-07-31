@@ -1,7 +1,6 @@
 package com.socialprotection.entity;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,13 +10,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "employees")
-public class Employee extends Person{
+public class Employee extends Person {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,37 +31,74 @@ public class Employee extends Person{
 	@JoinColumn(name = "image_id")
 	private Image image;
 
-	@Column(name = "phone_number")
-	private char phoneNumber;
+	@Column(name = "phone_number", columnDefinition = "char(10)")
+	private String phoneNumber;
 
 	private String email;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+	@Column(name = "birthday")
+	private Date birthDay;
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "from_date")
 	private Date fromDate;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "to_date")
 	private Date toDate;
 
-	@OneToMany(mappedBy = "employees")
-	private List<Job> jobs;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "job_id")
+	private Job job;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "employee")
 	private List<Children> children;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "empSalary")
 	private List<Salary> salaries;
 
+	@JsonIgnore
 	@OneToOne(mappedBy = "empAct")
 	private Activity activity;
 
-	@OneToMany(mappedBy = "employee")
-	private List<Shift> shift;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "shift_id")
+	private Shift shift;
 
-	public List<Shift> getShift() {
+	public Date getBirthDay() {
+		return birthDay;
+	}
+
+	public void setBirthDay(Date birthDay) {
+		this.birthDay = birthDay;
+	}
+
+	public Employee(String fullName, String firstName, String lastName, String gender, String nationality,
+			String addressPermanent, String addressTemporary, Image image, String phoneNumber, String email,
+			Date birthDay, Date fromDate, Date toDate, Job job, List<Salary> salaries) {
+		super(fullName, firstName, lastName, gender, nationality, addressPermanent, addressTemporary);
+		this.image = image;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.birthDay = birthDay;
+		this.fromDate = fromDate;
+		this.toDate = toDate;
+		this.job = job;
+		this.salaries = salaries;
+	}
+
+	public Employee() {
+		super();
+	}
+
+	public Shift getShift() {
 		return shift;
 	}
 
-	public void setShift(List<Shift> shift) {
+	public void setShift(Shift shift) {
 		this.shift = shift;
 	}
 
@@ -94,11 +134,11 @@ public class Employee extends Person{
 		this.image = image;
 	}
 
-	public char getPhoneNumber() {
+	public String getPhoneNumber() {
 		return phoneNumber;
 	}
 
-	public void setPhoneNumber(char phoneNumber) {
+	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
@@ -110,12 +150,12 @@ public class Employee extends Person{
 		this.email = email;
 	}
 
-	public List<Job> getJobs() {
-		return jobs;
+	public Job getJob() {
+		return job;
 	}
 
-	public void setJobs(List<Job> jobs) {
-		this.jobs = jobs;
+	public void setJob(Job job) {
+		this.job = job;
 	}
 
 	public List<Children> getChildren() {
@@ -144,25 +184,6 @@ public class Employee extends Person{
 
 	public void setToDate(Date toDate) {
 		this.toDate = toDate;
-	}
-
-	public Employee(Image image, char phoneNumber, String email, Date fromDate, Date toDate,
-			List<Job> jobs, List<Children> children, List<Salary> salaries, Activity activity, List<Shift> shift) {
-		super();
-		this.image = image;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.fromDate = fromDate;
-		this.toDate = toDate;
-		this.jobs = jobs;
-		this.children = children;
-		this.salaries = salaries;
-		this.activity = activity;
-		this.shift = shift;
-	}
-
-	public Employee() {
-		super();
 	}
 
 }

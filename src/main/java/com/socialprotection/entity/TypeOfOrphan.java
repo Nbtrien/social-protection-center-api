@@ -36,12 +36,6 @@ public class TypeOfOrphan {
 		this.description = description;
 	}
 
-	public TypeOfOrphan(String orphanTypeName, List<Children> children) {
-		super();
-		this.orphanTypeName = orphanTypeName;
-		this.children = children;
-	}
-
 	public TypeOfOrphan() {
 		super();
 	}

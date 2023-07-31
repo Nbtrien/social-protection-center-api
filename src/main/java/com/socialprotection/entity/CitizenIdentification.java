@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "citizen_identification")
 public class CitizenIdentification {
@@ -19,21 +22,25 @@ public class CitizenIdentification {
 	@Column(name = "citizen_id")
 	private long citizenId;
 	
-	@Column(name = "citizen_ident_number")
-	private char citizenIdentNumber;
+	@Column(name = "citizen_ident_number", columnDefinition = "Char(12)")
+	private String citizenIdentNumber;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "issue_date")
 	private Date issueDate;
 	
 	@Column(name = "issue_place")
 	private String issuePlace;
 	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "expire_date")
 	private Date expireDate;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "citizenId")
     private Children children;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "citizenIdentification")
     private Adopter adopter;
 	
@@ -55,11 +62,11 @@ public class CitizenIdentification {
 //		this.citizenId = citizenId;
 //	}
 
-	public char getCitizenIdentNumber() {
+	public String getCitizenIdentNumber() {
 		return citizenIdentNumber;
 	}
 
-	public void setCitizenIdentNumber(char citizenIdentNumber) {
+	public void setCitizenIdentNumber(String citizenIdentNumber) {
 		this.citizenIdentNumber = citizenIdentNumber;
 	}
 
@@ -95,7 +102,7 @@ public class CitizenIdentification {
 		this.children = children;
 	}
 
-	public CitizenIdentification(char citizenIdentNumber, Date issueDate, String issuePlace, Date expireDate,
+	public CitizenIdentification(String citizenIdentNumber, Date issueDate, String issuePlace, Date expireDate,
 			Children children, Adopter adopter) {
 		super();
 		this.citizenIdentNumber = citizenIdentNumber;

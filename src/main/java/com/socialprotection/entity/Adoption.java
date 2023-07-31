@@ -1,7 +1,9 @@
 package com.socialprotection.entity;
 
 import java.sql.Date;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,39 +12,49 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "adoptions")
 public class Adoption {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "adoption_id")
 	private long adoptionId;
-	
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "register_date")
 	private Date registerDate;
-	
-	@Column(name = "status")
-	private char status;
-	
+
+	@Column(name = "status", columnDefinition = "Char(1)")
+	private String status;
+
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "child_id")
+	@JoinColumn(name = "child_id", nullable = false)
 	private Children children;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "adopter_id")
-	private Adopter adopter;
+
+	@OneToMany(mappedBy = "adoption", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<Adopter> adopters;
+
+	@PrePersist
+	private void prePersist() {
+		adopters.forEach(c -> c.setAdoption(this));
+	}
 
 	public long getAdoptionId() {
 		return adoptionId;
 	}
 
-//	public void setAdoptionId(long adoptionId) {
-//		this.adoptionId = adoptionId;
-//	}
+	public void setAdoptionId(long adoptionId) {
+		this.adoptionId = adoptionId;
+	}
 
 	public Date getRegisterDate() {
 		return registerDate;
@@ -52,11 +64,11 @@ public class Adoption {
 		this.registerDate = registerDate;
 	}
 
-	public char getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(char status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 
@@ -68,27 +80,22 @@ public class Adoption {
 		this.children = children;
 	}
 
-	public Adopter getAdopter() {
-		return adopter;
+	public Set<Adopter> getAdopters() {
+		return adopters;
 	}
 
-	public void setAdopter(Adopter adopter) {
-		this.adopter = adopter;
+	public void setAdopters(Set<Adopter> adopters) {
+		this.adopters = adopters;
 	}
 
-	public Adoption(Date registerDate, char status, Children children, Adopter adopter) {
+	public Adoption(Date registerDate, String status) {
 		super();
 		this.registerDate = registerDate;
 		this.status = status;
-		this.children = children;
-		this.adopter = adopter;
 	}
 
 	public Adoption() {
 		super();
 	}
-	
-	
-	
 
 }

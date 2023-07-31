@@ -37,6 +37,12 @@ public class LogoutService implements LogoutHandler {
 
 	@Override
 	public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+		response.setHeader("Access-Control-Allow-Origin", "/**");
+		response.setHeader("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+		response.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
+		if (request.getMethod() == "OPTIONS") {
+	         response.setStatus(HttpStatus.OK_200);
+	    }
 		final String authHeader = request.getHeader("Authorization");
 		final String token;
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {

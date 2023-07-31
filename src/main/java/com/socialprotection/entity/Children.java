@@ -26,14 +26,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "children")
-public class Children extends Person{
+public class Children extends Person {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "child_id")
 	private long childId;
 
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "birthday")
 	private Date birthDay;
 
@@ -61,11 +61,11 @@ public class Children extends Person{
 	@JsonIgnore
 	private List<MedicalRecord> medicalRecords;
 
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "date_in")
 	private Date dateIn;
 
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd-MM-yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@Column(name = "date_out")
 	private Date dateOut;
 
@@ -78,11 +78,25 @@ public class Children extends Person{
 
 	@OneToMany(mappedBy = "children")
 	@JsonIgnore
-	private List<Adoption> adoptions = new ArrayList<>();
+	private List<Adoption> adoptions;
 
 	@OneToOne(mappedBy = "children")
 	@JsonIgnore
 	private AdoptionHistory adoptionHistory;
+
+	@OneToMany(mappedBy = "children")
+	@JsonIgnore
+	private List<Guardian> guardians;
+
+	
+
+	public List<Guardian> getGuardians() {
+		return guardians;
+	}
+
+	public void setGuardians(List<Guardian> guardians) {
+		this.guardians = guardians;
+	}
 
 	public AdoptionHistory getAdoptionHistory() {
 		return adoptionHistory;
@@ -123,7 +137,6 @@ public class Children extends Person{
 	public void setBirthDay(Date birthDay) {
 		this.birthDay = birthDay;
 	}
-
 
 	public Image getImage() {
 		return image;

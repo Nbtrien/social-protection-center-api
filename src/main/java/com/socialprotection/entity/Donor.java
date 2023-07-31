@@ -10,42 +10,55 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "donors")
-public class Donor extends Person{
-	
+public class Donor extends Person {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "donor_id")
 	private long donorId;
-	
+
 	@Column(name = "account_name")
 	private String accountName;
-	
+
 	@Column(name = "account_number")
 	private String accountNumber;
-	
+
 	@Column(name = "bank_name")
 	private String bankName;
-	
+
 	@Column(name = "bank_cvv")
 	private String bankCvv;
-	
+
 	@Column(name = "expiration_date")
 	private Date expirationDate;
-	
+
 	@OneToOne(mappedBy = "donor")
 	private Donation donation;
+
 	
+
+	public long getDonorId() {
+		return donorId;
+	}
+
+	public void setDonorId(long donorId) {
+		this.donorId = donorId;
+	}
+
+	
+
 	public Donor() {
 		super();
 	}
 
-	public Donor(String accountName, String accountNumber, String bankName, String bankCvv,
-			Date expirationDate, Donation donation) {
+	public Donor(String accountName, String accountNumber, String bankName, String bankCvv, Date expirationDate,
+			Donation donation) {
 		super();
 		this.accountName = accountName;
 		this.accountNumber = accountNumber;
@@ -102,5 +115,5 @@ public class Donor extends Person{
 	public void setDonation(Donation donation) {
 		this.donation = donation;
 	}
-	
+
 }

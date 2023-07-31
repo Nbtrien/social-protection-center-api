@@ -1,5 +1,7 @@
 package com.socialprotection.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,10 +44,22 @@ public class UserServiceImpl implements UserService {
 		user.setUserName(request.getUserName());
 		user.setPassWord(request.getPassWord());
 		user.setRole(request.getRole());
+		user.setPassWord(passwordEncoder.encode(user.getPassword()));
 		if (userRepository.save(user) != null)
 			return new StatusResponse(true, "Add new user successful!");
 		else
 			return new StatusResponse(false, "Add new user fail!");
+	}
+
+	@Override
+	public List<Role> findAllRole() {
+		return roleRepository.findAll();
+	}
+
+	@Override
+	public List<User> findAllUser() {
+		List<User> users = userRepository.findAll();
+		return users;
 	}
 
 }

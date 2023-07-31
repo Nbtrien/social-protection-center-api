@@ -22,6 +22,8 @@
 
 	<context:component-scan
 		base-package="com.socialprotection.controller" />
+		<context:component-scan
+		base-package="com.socialprotection.vnpay" />
 
 	<mvc:annotation-driven />
 
@@ -29,6 +31,5 @@
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/WEB-INF/views/" />
 		<property name="suffix" value=".jsp" />
-
 	</bean>
 </beans>

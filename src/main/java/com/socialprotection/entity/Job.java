@@ -1,16 +1,16 @@
 package com.socialprotection.entity;
 
-import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "jobs")
@@ -19,16 +19,26 @@ public class Job {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "job_id")
 	private long jobId;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "employee_id")
-	private Employee employees;
-	
-	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "job")
+	private List<Employee> employees;
+
 	@Column(name = "job_title")
 	private String jobTitle;
-	
-	
+
+	@Column(name = "job_description", columnDefinition = "TEXT")
+	private String jobDescription;
+
+	public Job() {
+		super();
+	}
+
+	public Job(String jobTitle, String jobDescription) {
+		super();
+		this.jobTitle = jobTitle;
+		this.jobDescription = jobDescription;
+	}
 
 	public long getJobId() {
 		return jobId;
@@ -38,11 +48,11 @@ public class Job {
 		this.jobId = jobId;
 	}
 
-	public Employee getEmployees() {
+	public List<Employee> getEmployees() {
 		return employees;
 	}
 
-	public void setEmployees(Employee employees) {
+	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
 
@@ -54,20 +64,12 @@ public class Job {
 		this.jobTitle = jobTitle;
 	}
 
-	public Job(Employee employees, String jobTitle) {
-		super();
-		this.employees = employees;
-		this.jobTitle = jobTitle;
+	public String getJobDescription() {
+		return jobDescription;
 	}
 
-	public Job() {
-		super();
+	public void setJobDescription(String jobDescription) {
+		this.jobDescription = jobDescription;
 	}
-
-	
-
-	
-	
-	
 
 }

@@ -3,6 +3,7 @@ package com.socialprotection.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,6 @@ import com.socialprotection.entity.Token;
 import com.socialprotection.entity.User;
 import com.socialprotection.repository.TokenRepository;
 import com.socialprotection.repository.UserRepository;
-import com.socialprotection.utils.StatusResponse;
 
 @Service
 public class AuthenticationService {
@@ -35,6 +35,11 @@ public class AuthenticationService {
 		revokeAllUserTokens(user);
 		saveUserToken(user, jwtToken);
 		return new AuthenticationResponse(user.getUsername(), jwtToken, user.getRole().getRoleName());
+	}
+	
+	public HttpStatus checkToken(String token) {
+		return null;
+
 	}
 
 	private void revokeAllUserTokens(User user) {

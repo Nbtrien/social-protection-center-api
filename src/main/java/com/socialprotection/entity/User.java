@@ -20,6 +20,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity(name = "user")
 @Table(name = "users")
 public class User implements UserDetails {
@@ -31,6 +33,7 @@ public class User implements UserDetails {
 	@Column(name = "username")
 	private String userName;
 
+	@JsonIgnore
 	@Column(name = "password")
 	private String passWord;
 
@@ -38,9 +41,11 @@ public class User implements UserDetails {
 	@JoinColumn(name = "role_id")
 	private Role role;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Article> articles;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Token> tokens;
 
@@ -61,14 +66,7 @@ public class User implements UserDetails {
 		this.role = role;
 	}
 
-	public User(long userId, String userName, String passWord, Role role) {
-		super();
-		this.userId = userId;
-		this.userName = userName;
-		this.passWord = passWord;
-		this.role = role;
-	}
-
+	@JsonIgnore
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return List.of(new SimpleGrantedAuthority(role.getRoleName()));
@@ -110,38 +108,47 @@ public class User implements UserDetails {
 		this.role = role;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getPassword() {
 		return this.passWord;
 	}
 
+	@JsonIgnore
 	@Override
 	public String getUsername() {
 		return this.userName;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
 
+	@JsonIgnore
 	@Override
 	public boolean isEnabled() {
 		return true;
 	}
+	
 
+	@JsonIgnore
 	@PreUpdate
 	public void setModifiedAt() {
 		this.modifiedAt = new Timestamp(System.currentTimeMillis());
 	}
+	
 }

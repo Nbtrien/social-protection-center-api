@@ -27,9 +27,10 @@ public class ChildrenStatus {
 	@JsonIgnore
 	@OneToMany(mappedBy = "childrenStatus")
 	private List<Children> children;
-
+	
 	@Column(name = "description", columnDefinition = "TEXT")
 	private String description;
+	
 
 	public ChildrenStatus(String status, String description) {
 		super();

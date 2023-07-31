@@ -24,6 +24,9 @@ public class BankAccount {
 
 	@Column(name = "account_name")
 	private String accountName;
+	
+	@Column(name = "bank_name")
+	private String bankName;
 
 	@Column(name = "balance")
 	private float balance;
@@ -38,11 +41,28 @@ public class BankAccount {
 		super();
 	}
 
-	public BankAccount(String accountNumber, String accountName, float balance) {
+	public BankAccount(String accountNumber, String accountName, String bankName, float balance) {
 		super();
 		this.accountNumber = accountNumber;
 		this.accountName = accountName;
+		this.bankName = bankName;
 		this.balance = balance;
+	}
+
+	public long getBankAccountId() {
+		return bankAccountId;
+	}
+
+	public void setBankAccountId(long bankAccountId) {
+		this.bankAccountId = bankAccountId;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
 	}
 
 	public String getAccountNumber() {

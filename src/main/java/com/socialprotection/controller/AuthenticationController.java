@@ -16,7 +16,7 @@ import com.socialprotection.auth.AuthenticationRequest;
 import com.socialprotection.auth.AuthenticationResponse;
 import com.socialprotection.service.AuthenticationService;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class AuthenticationController {
@@ -29,7 +29,7 @@ public class AuthenticationController {
 		return  ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
 	}
 
-	@CrossOrigin(origins = "http://localhost:3000")
+	@CrossOrigin
 	@RequestMapping(value = "/auth/checktoken", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<HttpStatus> checkToken(HttpServletRequest request) {

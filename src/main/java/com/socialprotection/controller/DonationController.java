@@ -138,11 +138,12 @@ public class DonationController {
 			donation.setVnpayTranNo(request.getVnp_TransactionNo());
 			donation.setStatus('0');
 
+			
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
 			Date date = (Date) formatter.parse(request.getVnp_PayDate());
 			Timestamp timestamp = new java.sql.Timestamp(date.getTime());
 			donation.setDonateTime(timestamp);
-			System.out.println(donation.toString());
+//			System.out.println(donation.toString());
 			donationService.saveDonation(donation);
 			return ResponseEntity.ok(donation);
 		}
